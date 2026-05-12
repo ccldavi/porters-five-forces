@@ -1,0 +1,895 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Porter's Five Forces · {CUSTOMER} · {DATE}</title>
+<!-- ============================================================
+  Canonical Porter's Five Forces template.
+  Edit ONLY the content inside <!-- FILL: ... --> regions.
+  Do NOT modify the <style> block.
+  Visual system: Editorial Gravity (shared with pestle-analysis).
+============================================================ -->
+<style>
+/* ============ Design tokens ============ */
+:root{
+  --ink:#15151a;
+  --ink-2:#2c2c33;
+  --ink-3:#50505a;
+  --mute:#78787f;
+  --mute-2:#a0a0a8;
+  --hair:#e4e4e8;
+  --hair-soft:#efeff2;
+  --surface:#fafafb;
+  --surface-2:#f4f4f6;
+  --paper:#ffffff;
+
+  --accent:#0a5ad1;
+  --accent-tint:#eaf1fc;
+  --accent-ink:#0849a8;
+  --graphite:#4a4a52;
+  --graphite-tint:#f4f4f6;
+
+  --warn:#b8531e;          /* Critical · 决定性 */
+  --warn-soft:#fdf1e7;
+  --high:#8a6a16;          /* High · 高 */
+  --high-soft:#faf4e2;
+  --mod:#4a7c3c;           /* Moderate · 中 */
+  --mod-soft:#edf4e8;
+
+  --serif:"Songti SC","Source Han Serif SC","Noto Serif CJK SC","Tiempos Text",Georgia,serif;
+  --sans:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",-apple-system,"SF Pro Text",sans-serif;
+  --mono:"JetBrains Mono","SF Mono",Menlo,Consolas,monospace;
+}
+
+@page{ size:A4 portrait; margin:14mm 12mm 12mm 12mm; }
+
+*{ box-sizing:border-box; }
+html,body{
+  margin:0; padding:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:9.4pt;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+a{
+  color:var(--accent-ink);
+  text-decoration:none;
+  border-bottom:0.4pt solid rgba(10,90,209,0.35);
+}
+.page-break{ page-break-after:always; }
+
+/* ============ Masthead ============ */
+.masthead{
+  border-bottom:0.75pt solid var(--ink);
+  padding-bottom:6pt;
+  margin-bottom:10pt;
+}
+.mast-top{
+  display:flex; justify-content:space-between; align-items:baseline;
+  font-family:var(--mono);
+  font-size:6.8pt;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--mute);
+}
+.mast-brand{ color:var(--ink); font-weight:600; }
+h1.title{
+  font-family:var(--serif);
+  font-weight:600;
+  font-size:26pt;
+  line-height:1.1;
+  margin:10pt 0 6pt 0;
+  color:var(--ink);
+}
+.deck{
+  font-family:var(--serif);
+  font-size:11pt;
+  line-height:1.55;
+  color:var(--ink-3);
+  max-width:170mm;
+}
+
+/* ============ Section header ============ */
+.sec-head{
+  display:flex; align-items:baseline; gap:10pt;
+  margin-top:14pt;
+  padding-bottom:4pt;
+  border-bottom:0.5pt solid var(--ink);
+}
+.sec-num{
+  font-family:var(--mono);
+  font-size:7pt;
+  letter-spacing:0.16em;
+  color:var(--mute);
+  text-transform:uppercase;
+}
+.sec-title{
+  font-family:var(--serif);
+  font-size:16pt;
+  font-weight:600;
+  color:var(--ink);
+}
+.sec-sub{
+  font-size:7.8pt;
+  color:var(--mute);
+  margin-left:auto;
+}
+
+/* ============ Exec Summary table ============ */
+.exec-intro-deck{
+  font-family:var(--serif);
+  font-size:11pt;
+  line-height:1.55;
+  color:var(--ink-3);
+  margin:10pt 0 8pt 0;
+  max-width:170mm;
+}
+.exec-table{
+  width:100%;
+  border-collapse:collapse;
+  margin:6pt 0 10pt 0;
+  font-size:8pt;
+}
+.exec-table th{
+  font-family:var(--mono);
+  font-size:6pt;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--mute);
+  text-align:left;
+  padding:6pt 5pt 4pt 5pt;
+  border-bottom:0.8pt solid var(--ink);
+  font-weight:600;
+  vertical-align:bottom;
+}
+.exec-table td{
+  padding:7pt 5pt;
+  border-bottom:0.3pt solid var(--hair);
+  vertical-align:top;
+  line-height:1.45;
+}
+.exec-table td.rank{
+  font-family:var(--mono); font-size:10pt; font-weight:700;
+  color:var(--mute);
+  width:8mm; text-align:center;
+}
+.exec-table td.force{
+  font-family:var(--serif); font-weight:600; font-size:9.6pt;
+  color:var(--ink);
+  width:28mm;
+}
+.exec-table td.force .en{
+  display:block;
+  font-family:var(--mono); font-size:6pt;
+  color:var(--mute);
+  letter-spacing:0.08em; text-transform:uppercase;
+  margin-top:2pt; font-weight:600;
+}
+.exec-table td.score-cell{
+  font-family:var(--serif);
+  font-weight:700;
+  font-size:14pt;
+  width:22mm;
+  text-align:right;
+  line-height:1;
+}
+.exec-table td.score-cell .tier{
+  font-family:var(--sans);
+  font-size:5.8pt;
+  letter-spacing:0.08em;
+  font-weight:700;
+  padding:1.5pt 4pt;
+  border-radius:1.2pt;
+  display:inline-block;
+  margin-top:3pt;
+}
+.exec-table td.score-cell .dims{
+  font-family:var(--mono);
+  font-size:6pt;
+  color:var(--mute);
+  font-weight:400;
+  margin-top:3pt;
+  letter-spacing:0.04em;
+  display:block;
+}
+.exec-table td.score-cell.critical{ color:var(--warn); }
+.exec-table td.score-cell.critical .tier{ background:var(--warn-soft); color:var(--warn); }
+.exec-table td.score-cell.high{ color:var(--high); }
+.exec-table td.score-cell.high .tier{ background:var(--high-soft); color:var(--high); }
+.exec-table td.score-cell.mod{ color:var(--mod); }
+.exec-table td.score-cell.mod .tier{ background:var(--mod-soft); color:var(--mod); }
+.exec-table td.takeaway{
+  font-family:var(--serif);
+  font-size:8.8pt;
+  color:var(--ink-2);
+  line-height:1.45;
+}
+.exec-table td.drivers{
+  font-size:7.8pt;
+  color:var(--ink-2);
+  line-height:1.45;
+  width:48mm;
+}
+.exec-table td.canvas{
+  font-family:var(--sans);
+  font-size:7pt;
+  color:var(--accent-ink);
+  line-height:1.5;
+  width:30mm;
+  font-weight:500;
+}
+
+.exec-callout{
+  padding:12pt 14pt;
+  background:var(--surface);
+  border-left:2.5pt solid var(--ink);
+  border-radius:0 3pt 3pt 0;
+  margin-top:4pt;
+  font-family:var(--serif);
+  font-size:10pt;
+  color:var(--ink-2);
+  line-height:1.6;
+}
+.exec-callout strong{ color:var(--ink); font-family:var(--sans); }
+
+/* ============ Force deep-dive ============ */
+.force-block{
+  break-inside:avoid;
+  margin-top:10pt;
+}
+.force-header{
+  display:grid;
+  grid-template-columns:1fr 40mm;
+  gap:10pt;
+  align-items:start;
+  border-bottom:0.5pt solid var(--ink);
+  padding-bottom:6pt;
+  margin-bottom:8pt;
+}
+.force-header .left .tag{
+  font-family:var(--mono);
+  font-size:6.6pt;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--mute);
+}
+.force-header .left .title{
+  font-family:var(--serif);
+  font-size:18pt;
+  font-weight:600;
+  color:var(--ink);
+  line-height:1.15;
+  margin-top:2pt;
+}
+.force-header .left .subtitle{
+  font-family:var(--serif);
+  font-size:9.8pt;
+  color:var(--ink-3);
+  margin-top:4pt;
+  line-height:1.5;
+}
+.score-box{
+  border:0.5pt solid var(--hair);
+  border-radius:3pt;
+  padding:8pt 12pt;
+  background:var(--surface);
+  text-align:center;
+  font-family:var(--mono);
+  font-size:6.2pt;
+  letter-spacing:0.04em;
+  color:var(--mute);
+  line-height:1.5;
+}
+.score-box .big{
+  font-family:var(--serif);
+  font-size:28pt;
+  font-weight:700;
+  color:var(--ink);
+  display:block;
+  line-height:1;
+  margin-bottom:6pt;
+}
+.score-box .big.critical{ color:var(--warn); }
+.score-box .big.high{ color:var(--high); }
+.score-box .big.mod{ color:var(--mod); }
+.score-box .tier-pill{
+  display:inline-block;
+  font-family:var(--sans);
+  font-size:6.4pt;
+  font-weight:700;
+  padding:2pt 6pt;
+  border-radius:1.2pt;
+  letter-spacing:0.1em;
+  margin-bottom:0;
+}
+.score-box .tier-pill.critical{ background:var(--warn-soft); color:var(--warn); }
+.score-box .tier-pill.high{ background:var(--high-soft); color:var(--high); }
+.score-box .tier-pill.mod{ background:var(--mod-soft); color:var(--mod); }
+
+/* ============ Key evidence · narrative ============ */
+.narrative{
+  font-size:9pt;
+  line-height:1.6;
+  color:var(--ink-2);
+  margin-bottom:6pt;
+}
+.narrative strong{ color:var(--ink); font-weight:600; }
+
+.evidence-row{
+  display:grid;
+  grid-template-columns:22mm 1fr;
+  gap:8pt;
+  padding:4pt 0;
+  border-top:0.3pt solid var(--hair-soft);
+}
+.evidence-row:first-of-type{ border-top:0; padding-top:0; }
+.evidence-row .k{
+  font-family:var(--sans);
+  font-size:7.2pt;
+  color:var(--mute);
+  padding-top:2pt;
+  font-weight:600;
+}
+.evidence-row .v{
+  color:var(--ink-2);
+  font-size:8.8pt;
+  line-height:1.55;
+}
+.evidence-row .v strong{ color:var(--ink); font-weight:600; }
+.evidence-row.so-what .v{
+  font-family:var(--serif);
+  font-size:9.6pt;
+  color:var(--ink);
+  line-height:1.55;
+}
+.evidence-row.so-what .k{ color:var(--accent-ink); }
+
+/* ============ Competitor matrix (Rivalry) ============ */
+.comp-matrix{
+  width:100%;
+  border-collapse:collapse;
+  font-size:7.4pt;
+  line-height:1.45;
+  margin:6pt 0;
+}
+.comp-matrix th{
+  font-family:var(--sans);
+  font-size:6.6pt;
+  color:var(--mute);
+  background:var(--surface);
+  font-weight:600;
+  text-align:left;
+  padding:4pt 5pt;
+  border-bottom:0.5pt solid var(--ink);
+  vertical-align:bottom;
+}
+.comp-matrix td{
+  padding:5pt 5pt;
+  border-bottom:0.3pt solid var(--hair);
+  vertical-align:top;
+  line-height:1.45;
+  font-size:7.6pt;
+  color:var(--ink-2);
+}
+.comp-matrix td.name{
+  font-family:var(--serif);
+  font-weight:600;
+  font-size:8.6pt;
+  color:var(--ink);
+  width:22mm;
+}
+.comp-matrix td.share{
+  font-family:var(--mono);
+  font-weight:700;
+  color:var(--ink);
+  white-space:nowrap;
+  width:20mm;
+}
+.comp-matrix td.intensity{
+  font-family:var(--serif);
+  font-weight:700;
+  font-size:10pt;
+  text-align:center;
+  width:14mm;
+}
+.comp-matrix td.intensity.critical{ color:var(--warn); }
+.comp-matrix td.intensity.high{ color:var(--high); }
+.comp-matrix td.intensity.mod{ color:var(--mod); }
+
+/* ============ Business Model Canvas impact trace ============ */
+.canvas-impact{
+  margin-top:8pt;
+  border:0.5pt solid var(--hair);
+  border-radius:3pt;
+  padding:8pt 10pt;
+  background:var(--surface);
+  break-inside:avoid;
+}
+.canvas-impact .lbl{
+  font-family:var(--sans);
+  font-size:7pt;
+  color:var(--mute);
+  margin-bottom:5pt;
+  font-weight:600;
+}
+.canvas-impact .lbl strong{ color:var(--accent-ink); font-weight:700; }
+.canvas-impact .blocks{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  column-gap:14pt;
+  row-gap:3pt;
+}
+.canvas-impact .block{
+  display:grid;
+  grid-template-columns:30mm 1fr;
+  gap:6pt;
+  padding:3pt 0;
+  border-top:0.3pt solid var(--hair-soft);
+  font-size:8pt;
+  line-height:1.45;
+}
+.canvas-impact .block:first-child{ border-top:0; padding-top:0; }
+.canvas-impact .block .name{
+  font-family:var(--serif);
+  font-weight:600;
+  font-size:8.6pt;
+  color:var(--ink);
+}
+.canvas-impact .block .name .en{
+  display:block;
+  font-family:var(--mono);
+  font-size:5.8pt;
+  color:var(--mute);
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  margin-top:1pt;
+  font-weight:600;
+}
+.canvas-impact .block .txt{
+  color:var(--ink-2);
+  font-size:7.8pt;
+  line-height:1.5;
+}
+.canvas-impact .block .txt strong{ color:var(--ink); font-weight:600; }
+
+/* ============ Response / recommendation ============ */
+.resp{
+  margin-top:6pt;
+  padding:7pt 10pt;
+  border-left:1.8pt solid var(--ink);
+  background:var(--hair-soft);
+  border-radius:0 2pt 2pt 0;
+}
+.resp .lbl{
+  font-family:var(--sans);
+  font-size:6.8pt;
+  color:var(--mute);
+  margin-bottom:3pt;
+  font-weight:700;
+}
+.resp .txt{
+  font-family:var(--serif);
+  font-size:9.2pt;
+  color:var(--ink);
+  line-height:1.55;
+}
+
+/* ============ Integrated assessment callout ============ */
+.verdict{
+  margin:8pt 0 10pt 0;
+  padding:12pt 14pt;
+  background:linear-gradient(135deg,#15151a 0%,#2c2c33 100%);
+  color:#f0f0f3;
+  border-radius:3pt;
+  break-inside:avoid;
+}
+.verdict .lbl{
+  font-family:var(--sans);
+  font-size:6.8pt;
+  color:#a0a0a8;
+  margin-bottom:5pt;
+  font-weight:700;
+}
+.verdict .body{
+  font-family:var(--serif);
+  font-size:10.5pt;
+  color:#f0f0f3;
+  line-height:1.65;
+}
+.verdict .body strong{ color:#fff; }
+.verdict .body em{ color:#fcd9b6; font-style:normal; }
+.verdict .body a{
+  color:#8fb8f5;
+  border-bottom-color:rgba(143,184,245,0.35);
+}
+.verdict .moves{
+  margin-top:8pt;
+  padding-top:8pt;
+  border-top:0.5pt solid rgba(240,240,243,0.25);
+  font-family:var(--serif);
+  font-size:9.8pt;
+  color:#e0e0e5;
+  line-height:1.6;
+}
+.verdict .moves strong{ color:#fff; }
+
+/* ============ Handoff + footer ============ */
+.handoff{
+  margin-top:12pt;
+  padding:10pt 12pt;
+  background:var(--accent-tint);
+  border-left:2.5pt solid var(--accent);
+  border-radius:0 3pt 3pt 0;
+  font-family:var(--serif);
+  font-size:9.8pt;
+  color:var(--ink-2);
+  line-height:1.55;
+}
+.footer{
+  margin-top:14pt;
+  padding-top:6pt;
+  border-top:0.5pt solid var(--hair);
+  display:flex; justify-content:space-between;
+  font-family:var(--mono);
+  font-size:6.4pt;
+  letter-spacing:0.1em;
+  color:var(--mute);
+  text-transform:uppercase;
+}
+.footer .cn{ font-family:var(--sans); text-transform:none; letter-spacing:0.02em; }
+
+/* inline helpers */
+.fig{ font-weight:700; color:var(--ink); }
+.neg{ color:var(--warn); font-weight:700; }
+.pos{ color:var(--mod); font-weight:700; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+  FILL: MASTHEAD
+  - Replace {CUSTOMER}, {CUSTOMER_EN}, {DATE}
+  - Rewrite the <deck> paragraph for this customer's situation
+============================================================ -->
+<div class="masthead">
+  <div class="mast-top">
+    <span class="mast-brand">Kiro · 首席企业顾问</span>
+    <span>波特五力 · 竞争结构分析</span>
+    <span>{DATE}</span>
+  </div>
+  <h1 class="title">{CUSTOMER} — 竞争结构诊断</h1>
+  <div class="deck">
+    <!-- One- or two-sentence executive framing: why the five forces matter for this customer right now. Keep it concrete, anchored to current signals. -->
+  </div>
+</div>
+
+<!-- ============================================================
+  FILL: a. EXECUTIVE SUMMARY
+  - Sort rows by Final Score DESCENDING
+  - Score cell format: Final Score (one decimal) + tier pill only. NO I/L/C dim line, NO weighted calc.
+  - The cross-force callout identifies forces that share a common driver
+============================================================ -->
+<div class="sec-head">
+  <span class="sec-num">a.</span>
+  <span class="sec-title">执行摘要 · 五力排序</span>
+</div>
+
+<div class="exec-intro-deck">
+  <!-- One-paragraph framing: which forces dominate, why now, what the rank tells you. -->
+</div>
+
+<table class="exec-table">
+  <thead>
+    <tr>
+      <th style="width:8mm;">排名</th>
+      <th style="width:28mm;">五力</th>
+      <th>主导驱动</th>
+      <th style="width:30mm;">最受冲击商业画布模块</th>
+      <th style="text-align:right; width:22mm;">终分</th>
+      <th>战略启示</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Repeat this row pattern for each of 5 forces, sorted by final score desc.
+         Apply class "critical" (>=4.0), "high" (3.0-3.99), or "mod" (<3.0). -->
+    <tr>
+      <td class="rank">#1</td>
+      <td class="force"><!-- 中文五力名 --><span class="en"><!-- English name --></span></td>
+      <td class="drivers"><!-- dominant drivers, with [Publication · YYYY-MM-DD](url) inline --></td>
+      <td class="canvas"><!-- Business Model Canvas blocks most affected, comma-separated --></td>
+      <td class="score-cell critical"><!-- e.g. 4.75 -->
+        <span class="tier">决定性</span>
+      </td>
+      <td class="takeaway"><!-- one-line strategic takeaway; may use <em> for emphasis --></td>
+    </tr>
+    <!-- ... 4 more rows ... -->
+  </tbody>
+</table>
+
+<div class="exec-callout">
+  <strong><!-- Cross-force cascade headline --></strong><br/>
+  <!-- 2-3 sentences naming which forces share a common structural driver, and why treating them as one problem matters. -->
+  <br/><br/>
+  <strong>市场情报信号映射</strong> · <!-- MI #1 → forces · MI #2 → forces · MI #3 → forces -->
+</div>
+
+<div class="page-break"></div>
+
+<!-- ============================================================
+  FILL: b. COMPETITIVE RIVALRY
+  - Competitor matrix across all principal competitors
+  - Business Model Canvas impact trace mandatory
+  - Per-competitor Business Model Canvas deep-dive is done ABOVE the matrix in narrative form if the customer's rivalry complexity demands it
+============================================================ -->
+<div class="force-block">
+  <div class="force-header">
+    <div class="left">
+      <div class="tag">b · 第一力 · 现有竞争者</div>
+      <div class="title">竞争 · 现有竞争者</div>
+      <div class="subtitle"><!-- one-line thesis --></div>
+    </div>
+    <div class="score-box">
+      <span class="big critical"><!-- e.g. 4.75 --></span>
+      <span class="tier-pill critical">决定性</span>
+    </div>
+  </div>
+
+  <div class="narrative">
+    <!-- 2-3 paragraphs setting industry concentration (CR3/CR5), customer's position, recent performance, with inline sources. -->
+  </div>
+
+  <table class="comp-matrix">
+    <thead>
+      <tr>
+        <th>竞对</th>
+        <th>份额 / 规模</th>
+        <th>战略姿态 · 2026 关键动作</th>
+        <th>主攻商业画布模块</th>
+        <th>烈度</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- One row per principal competitor.
+           Apply class "critical" / "high" / "mod" on the intensity cell. -->
+      <tr>
+        <td class="name"><!-- 竞对名 --></td>
+        <td class="share"><!-- share + trend --></td>
+        <td><!-- strategic posture + key moves with inline sources --></td>
+        <td><!-- canvas blocks --></td>
+        <td class="intensity critical">0.0</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="canvas-impact">
+    <div class="lbl"><strong>商业画布影响传导</strong> · 现有竞争如何穿透客户商业画布</div>
+    <div class="blocks">
+      <!-- Required blocks per Rivalry: all 9 Business Model Canvas modules may be named; show the most-affected 4-6 in the grid. -->
+      <div class="block">
+        <div class="name">价值主张<span class="en">Value Proposition</span></div>
+        <div class="txt"></div>
+      </div>
+      <!-- ... more blocks ... -->
+    </div>
+  </div>
+
+  <div class="resp">
+    <div class="lbl">应对建议 · 战略响应</div>
+    <div class="txt"><!-- concrete response; avoid generic language --></div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ============================================================
+  FILL: c. SUPPLIER POWER
+  - Evidence rows: key suppliers, switching cost, concentration, forward-integration
+  - "So what" row is required (italic serif)
+  - Business Model Canvas impact: Cost Structure, Key Activities, Key Resources, Key Partnerships
+============================================================ -->
+<div class="force-block">
+  <div class="force-header">
+    <div class="left">
+      <div class="tag">c · 第三力 · 供应商议价</div>
+      <div class="title">供应商议价能力</div>
+      <div class="subtitle"><!-- thesis --></div>
+    </div>
+    <div class="score-box">
+      <span class="big"><!-- score --></span>
+      <span class="tier-pill">tier</span>
+    </div>
+  </div>
+
+  <div class="evidence-row"><div class="k">关键供应商 #1</div><div class="v"></div></div>
+  <div class="evidence-row"><div class="k">关键供应商 #2</div><div class="v"></div></div>
+  <div class="evidence-row"><div class="k">关键供应商 #3</div><div class="v"></div></div>
+  <div class="evidence-row so-what"><div class="k">一句话意味着什么</div><div class="v"></div></div>
+
+  <div class="canvas-impact">
+    <div class="lbl"><strong>商业画布影响传导</strong> · 供应商议价集中冲击成本侧（商业画布）</div>
+    <div class="blocks">
+      <div class="block"><div class="name">成本结构<span class="en">Cost Structure</span></div><div class="txt"></div></div>
+      <div class="block"><div class="name">关键业务<span class="en">Key Activities</span></div><div class="txt"></div></div>
+      <div class="block"><div class="name">核心资源<span class="en">Key Resources</span></div><div class="txt"></div></div>
+      <div class="block"><div class="name">关键合作<span class="en">Key Partnerships</span></div><div class="txt"></div></div>
+    </div>
+  </div>
+
+  <div class="resp">
+    <div class="lbl">应对建议 · 战略响应</div>
+    <div class="txt"></div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ============================================================
+  FILL: d. BUYER POWER
+  - Evidence rows: buyer profile, concentration, price transparency, backward integration
+  - Business Model Canvas impact: Revenue Streams, Customer Relationships, Value Proposition, Channels
+============================================================ -->
+<div class="force-block">
+  <div class="force-header">
+    <div class="left">
+      <div class="tag">d · 第二力 · 购买者议价</div>
+      <div class="title">购买者议价能力</div>
+      <div class="subtitle"><!-- thesis --></div>
+    </div>
+    <div class="score-box">
+      <span class="big"><!-- score --></span>
+      <span class="tier-pill">tier</span>
+    </div>
+  </div>
+
+  <div class="evidence-row"><div class="k">买家画像</div><div class="v"></div></div>
+  <div class="evidence-row"><div class="k">集中度信号</div><div class="v"></div></div>
+  <div class="evidence-row"><div class="k">价格透明度</div><div class="v"></div></div>
+  <div class="evidence-row"><div class="k">向后整合</div><div class="v"></div></div>
+  <div class="evidence-row so-what"><div class="k">一句话意味着什么</div><div class="v"></div></div>
+
+  <div class="canvas-impact">
+    <div class="lbl"><strong>商业画布影响传导</strong> · 购买者议价压迫收入侧（商业画布）</div>
+    <div class="blocks">
+      <div class="block"><div class="name">收入来源<span class="en">Revenue Streams</span></div><div class="txt"></div></div>
+      <div class="block"><div class="name">客户关系<span class="en">Customer Relationships</span></div><div class="txt"></div></div>
+      <div class="block"><div class="name">价值主张<span class="en">Value Proposition</span></div><div class="txt"></div></div>
+      <div class="block"><div class="name">渠道通路<span class="en">Channels</span></div><div class="txt"></div></div>
+    </div>
+  </div>
+
+  <div class="resp">
+    <div class="lbl">应对建议 · 战略响应</div>
+    <div class="txt"></div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ============================================================
+  FILL: e. NEW ENTRANTS
+  - Evidence rows: barrier assessment, cross-industry disruptors, regulatory, incumbent response
+  - Business Model Canvas impact: Customer Segments, Value Proposition, Channels, Cost Structure, Key Partnerships
+============================================================ -->
+<div class="force-block">
+  <div class="force-header">
+    <div class="left">
+      <div class="tag">e · 第四力 · 潜在进入者</div>
+      <div class="title">潜在进入者威胁</div>
+      <div class="subtitle"><!-- thesis --></div>
+    </div>
+    <div class="score-box">
+      <span class="big"><!-- score --></span>
+      <span class="tier-pill">tier</span>
+    </div>
+  </div>
+
+  <div class="evidence-row"><div class="k">进入壁垒</div><div class="v"></div></div>
+  <div class="evidence-row"><div class="k">跨行业降维者</div><div class="v"></div></div>
+  <div class="evidence-row"><div class="k">法规 / 标准</div><div class="v"></div></div>
+  <div class="evidence-row"><div class="k">在位者反应</div><div class="v"></div></div>
+
+  <div class="canvas-impact">
+    <div class="lbl"><strong>商业画布影响传导</strong> · 新进入者打的是商业画布的广度，不是深度</div>
+    <div class="blocks">
+      <div class="block"><div class="name">客户细分<span class="en">Customer Segments</span></div><div class="txt"></div></div>
+      <div class="block"><div class="name">价值主张<span class="en">Value Proposition</span></div><div class="txt"></div></div>
+      <div class="block"><div class="name">渠道通路<span class="en">Channels</span></div><div class="txt"></div></div>
+      <div class="block"><div class="name">成本结构<span class="en">Cost Structure</span></div><div class="txt"></div></div>
+      <div class="block"><div class="name">关键合作<span class="en">Key Partnerships</span></div><div class="txt"></div></div>
+    </div>
+  </div>
+
+  <div class="resp">
+    <div class="lbl">应对建议 · 战略响应</div>
+    <div class="txt"></div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ============================================================
+  FILL: f. SUBSTITUTES
+  - Evidence rows: substitute definition, price/performance, switching cost, driver
+  - Business Model Canvas impact: Value Proposition, Customer Segments, Revenue Streams, Key Activities
+============================================================ -->
+<div class="force-block">
+  <div class="force-header">
+    <div class="left">
+      <div class="tag">f · 第五力 · 替代品</div>
+      <div class="title">替代品威胁</div>
+      <div class="subtitle"><!-- thesis --></div>
+    </div>
+    <div class="score-box">
+      <span class="big"><!-- score --></span>
+      <span class="tier-pill">tier</span>
+    </div>
+  </div>
+
+  <div class="evidence-row"><div class="k">替代 · 定义</div><div class="v"></div></div>
+  <div class="evidence-row"><div class="k">替代 · 商业模式</div><div class="v"></div></div>
+  <div class="evidence-row"><div class="k">价格/性能</div><div class="v"></div></div>
+  <div class="evidence-row"><div class="k">驱动力</div><div class="v"></div></div>
+  <div class="evidence-row so-what"><div class="k">一句话意味着什么</div><div class="v"></div></div>
+
+  <div class="canvas-impact">
+    <div class="lbl"><strong>商业画布影响传导</strong> · 替代是慢动作的价值主张失效（商业画布级联）</div>
+    <div class="blocks">
+      <div class="block"><div class="name">价值主张<span class="en">Value Proposition</span></div><div class="txt"></div></div>
+      <div class="block"><div class="name">客户细分<span class="en">Customer Segments</span></div><div class="txt"></div></div>
+      <div class="block"><div class="name">收入来源<span class="en">Revenue Streams</span></div><div class="txt"></div></div>
+      <div class="block"><div class="name">关键业务<span class="en">Key Activities</span></div><div class="txt"></div></div>
+    </div>
+  </div>
+
+  <div class="resp">
+    <div class="lbl">应对建议 · 战略响应</div>
+    <div class="txt"></div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ============================================================
+  FILL: g. INTEGRATED THREAT ASSESSMENT
+  - Name the single dominant force and argue why
+  - Show the Business Model Canvas cascade across ≥3 blocks
+  - 1-2 concrete priority moves with horizons
+============================================================ -->
+<div class="sec-head">
+  <span class="sec-num">g.</span>
+  <span class="sec-title">综合威胁评估与战略优先级</span>
+</div>
+
+<div class="verdict">
+  <div class="lbl">主导之力 · <!-- #N force name · score · tier --></div>
+  <div class="body">
+    <!-- Paragraph 1: name the dominant force, explain why it's the spine (upstream force that activates others), cite specific findings from sections b-f. -->
+    <br/><br/>
+    <!-- Paragraph 2: trace the Business Model Canvas cascade explicitly — VP → Revenue → Activities → Partnerships → Cost — and anchor it to current evidence. -->
+  </div>
+  <div class="moves">
+    <strong>优先行动 1 · 6–12 个月 · <!-- title --></strong><br/>
+    <!-- concrete, non-generic action description with the AWS workload (if relevant) it unlocks. -->
+    <br/><br/>
+    <strong>优先行动 2 · 12–24 个月 · <!-- title --></strong><br/>
+    <!-- same shape, focused on structural / M&A-scale move. -->
+  </div>
+</div>
+
+<!-- ============================================================
+  FILL: HANDOFF
+============================================================ -->
+<div class="handoff">
+  本波特五力分析已就绪，可作为上游输入交付给 <strong style="font-family:var(--sans);">account-analysis</strong>，用于商业画布精修与 SWOT/TOWS 综合。与 <strong style="font-family:var(--sans);">pestle-analysis</strong>（宏观环境）输出配对，构成完整的外部力量视图。下游产出：Top-5 战略行动清单，每条映射到对应的 AWS 工作负载与客户侧切入点。
+</div>
+
+<div class="footer">
+  <span class="cn">波特五力 · {CUSTOMER} · 竞争结构</span>
+  <span class="cn"><!-- one-line summary of the tier distribution --></span>
+  <span>Generated {DATE}</span>
+</div>
+
+</body>
+</html>
